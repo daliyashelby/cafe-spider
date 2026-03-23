@@ -69,9 +69,14 @@ const cafeIconConfig = {
       {
         method: "POST",
         body: query,
+         headers: {
+      "Content-Type": "text/plain",
+    },
       }
     );
-
+    if (!response.ok) {
+  throw new Error("API request failed");
+}
     const data = await response.json();
     const cafesWithRatings = data.elements
   .slice(0, 25)
@@ -121,7 +126,12 @@ const cafeIconConfig = {
   }
 }, [maxDistance]);
 
-const getDistance = (lat1, lon1, lat2, lon2) => {
+const getDistance = (
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number => {
   const R = 6371; // km
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
