@@ -16,7 +16,10 @@ const MapView = dynamic(() => import("../components/MapView"), {
 
 
 export default function Home() {
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState<{
+  lat: number;
+  lng: number;
+} | null>(null);
   const [cafes, setCafes] = useState([]);
   const [maxDistance, setMaxDistance] = useState(6);
   const [loading, setLoading] = useState(true);
