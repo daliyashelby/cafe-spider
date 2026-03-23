@@ -28,7 +28,7 @@ type Cafe = {
   rating: string;
 };
   const [cafes, setCafes] = useState<Cafe[]>([]);
-  const [maxDistance, setMaxDistance] = useState(6);
+  const [maxDistance, setMaxDistance] = useState(10);
   const [loading, setLoading] = useState(true);
   
   const userIconConfig = {
@@ -59,8 +59,8 @@ const cafeIconConfig = {
     const query = `
       [out:json];
       node
-        [amenity=cafe]
-        (around:6000, ${lat}, ${lng});
+        [amenity~"cafe|restaurant|coffee_shops"]
+        (around:10000, ${lat}, ${lng});
       out;
     `;
 
@@ -81,7 +81,7 @@ const cafeIconConfig = {
 }
     const data = await response.json();
     const cafesWithRatings = data.elements
-  .slice(0, 25)
+  .slice(0, 50)
   .map((place: any) => ({
     name: place.tags?.name || "Unnamed Cafe",
     lat: place.lat,
@@ -160,7 +160,8 @@ const filteredCafes = cafes.filter((cafe) => {
 
   return distance <= maxDistance;
 });
-
+const size = Math.min(90, maxDistance * 12);
+const CENTER = 200;
  return (
   <main
   style={{
@@ -291,7 +292,7 @@ const filteredCafes = cafes.filter((cafe) => {
   <input
     type="range"
     min="1"
-    max="6"
+    max="10"
     value={maxDistance}
     onChange={(e) => setMaxDistance(Number(e.target.value))}
     style={{ width: "200px" }}
@@ -300,15 +301,19 @@ const filteredCafes = cafes.filter((cafe) => {
     {filteredCafes.length} cafes found
   </p>
 </div>{loading && <p>Loading cafes...</p>}
+  
 {view === "spider" && (
+  
+
   <>
+  
         <div
           style={{
            position: "relative",
-  width: "90vw",
-  height: "90vw",
-  maxWidth: "400px",
-  maxHeight: "400px",
+               width: `${size}vw`,
+    height: `${size}vw`,
+    maxWidth: "600px",
+    maxHeight: "600px",
   aspectRatio: "1 / 1",
   margin: "40px auto",
   border: "1px solid #334155",
@@ -330,9 +335,12 @@ const filteredCafes = cafes.filter((cafe) => {
   }}
 >
     {/* ✅ ADD RINGS HERE */}
-  {[50, 100, 150, 180].map((r, i) => (
+  {[1, 2, 3, 4, 5].map((step) => {
+  const r = (step / 5) * 180;
+    
+  return (
     <circle
-      key={i}
+      key={step}
       cx="200"
       cy="200"
       r={r}
@@ -340,9 +348,10 @@ const filteredCafes = cafes.filter((cafe) => {
       stroke="rgba(150,150,150,0.3)"
       strokeWidth="1"
     />
-  ))}
+  );
+})}
     {filteredCafes.map((cafe, index) => {
-      const angle = (index * (2 * Math.PI)) / filteredCafes.length;
+      const angle = (index * 2 * Math.PI) / filteredCafes.length;
       const distance = getDistance(
         location.lat,
         location.lng,
@@ -350,16 +359,16 @@ const filteredCafes = cafes.filter((cafe) => {
         cafe.lng
       );
 
-      const maxDistance = 5;
-     const baseRadius = Math.min((distance / maxDistance) * 180, 180);
+      
+     const radius = Math.min((distance / maxDistance) * 180, 180);
 
-// add slight separation
-      const radius = baseRadius + index * 2;
-      const jitter = 5;
-      const spread = 0.5; // small randomness
-      const x = 200 + radius * Math.cos(angle) + Math.random() * spread;
-      const y = 200 + radius * Math.sin(angle) + Math.random() * spread;
 
+
+      
+      
+      const x = CENTER + radius * Math.cos(angle);
+const y = CENTER + radius * Math.sin(angle);
+      
       return (
         <line
           key={index}
@@ -397,7 +406,7 @@ const filteredCafes = cafes.filter((cafe) => {
 
           {/* CAFES */}
        {filteredCafes.map((cafe, index) => {
-  const angle = (index / filteredCafes.length) * 2 * Math.PI;
+  const angle = (index * 2 * Math.PI) / filteredCafes.length;
 
   const distance = getDistance(
     location.lat,
@@ -406,12 +415,11 @@ const filteredCafes = cafes.filter((cafe) => {
     cafe.lng
   );
 
-  const maxDistance = 5; // normalize (5km max)
+  
   const radius = Math.min((distance / maxDistance) * 180, 180);
 
-  const x = 200 + radius * Math.cos(angle);
-  const y = 200 + radius * Math.sin(angle);
-  
+  const x = CENTER + radius * Math.cos(angle);
+const y = CENTER + radius * Math.sin(angle);
 
   return (
     <div
@@ -428,8 +436,8 @@ const filteredCafes = cafes.filter((cafe) => {
 }}
       style={{
         position: "absolute",
-        left: x,
-        top: y,
+        left: `${(x / 400) * 100}%`,
+top: `${(y / 400) * 100}%`,
         transform:
           selectedCafe?.lat === cafe.lat &&
           selectedCafe?.lng === cafe.lng
