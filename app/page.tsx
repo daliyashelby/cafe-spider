@@ -65,7 +65,7 @@ const cafeIconConfig = {
     const data = await response.json();
     const cafesWithRatings = data.elements
   .slice(0, 25)
-  .map((place) => ({
+  .map((place: any) => ({
     name: place.tags?.name || "Unnamed Cafe",
     lat: place.lat,
     lng: place.lon,
