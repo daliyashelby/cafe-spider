@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -200,7 +201,7 @@ const CENTER = 200;
 </h1>
 
 <p style={{ opacity: 0.7 }}>
- Discover cafes around you visually
+ Discover cafes and restaurants around you visually
 </p>
 </div>
 
