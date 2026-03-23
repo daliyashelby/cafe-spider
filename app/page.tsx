@@ -44,7 +44,7 @@ const cafeIconConfig = {
   const [view, setView] = useState("spider");
   
 
- const fetchCafes = async (lat, lng) => {
+ const fetchCafes = async (lat:number, lng:number) => {
   try {
     const query = `
       [out:json];
@@ -365,7 +365,7 @@ const filteredCafes = cafes.filter((cafe) => {
 
           {/* CAFES */}
        {filteredCafes.map((cafe, index) => {
-  const angle = (index / cafes.length) * 2 * Math.PI;
+  const angle = (index / filteredCafes.length) * 2 * Math.PI;
 
   const distance = getDistance(
     location.lat,
