@@ -353,9 +353,9 @@ const filteredCafes = cafes.filter((cafe) => {
 
       const maxDistance = 5;
       const radius = Math.min((distance / maxDistance) * 180, 180);
-
-      const x = 200 + radius * Math.cos(angle);
-      const y = 200 + radius * Math.sin(angle);
+      const spread = 0.5; // small randomness
+      const x = 200 + radius * Math.cos(angle) + Math.random() * spread;
+      const y = 200 + radius * Math.sin(angle) + Math.random() * spread;
 
       return (
         <line
@@ -447,8 +447,8 @@ const filteredCafes = cafes.filter((cafe) => {
         height: "14px",
         borderRadius: "50%",
         cursor: "pointer",
-         opacity: 0,
-      animation: "fadeIn 0.5s ease forwards",
+         opacity: 1,
+      
       animationDelay: `${index * 0.1}s`,
       transition: "all 0.2s ease",
       }}
