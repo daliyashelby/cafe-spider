@@ -342,8 +342,7 @@ const filteredCafes = cafes.filter((cafe) => {
     />
   ))}
     {filteredCafes.map((cafe, index) => {
-      const angle = (index / filteredCafes.length) * 2 * Math.PI;
-
+      const angle = (index * (2 * Math.PI)) / filteredCafes.length;
       const distance = getDistance(
         location.lat,
         location.lng,
@@ -352,7 +351,11 @@ const filteredCafes = cafes.filter((cafe) => {
       );
 
       const maxDistance = 5;
-      const radius = Math.min((distance / maxDistance) * 180, 180);
+     const baseRadius = Math.min((distance / maxDistance) * 180, 180);
+
+// add slight separation
+      const radius = baseRadius + index * 2;
+      const jitter = 5;
       const spread = 0.5; // small randomness
       const x = 200 + radius * Math.cos(angle) + Math.random() * spread;
       const y = 200 + radius * Math.sin(angle) + Math.random() * spread;
