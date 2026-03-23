@@ -16,11 +16,18 @@ const MapView = dynamic(() => import("../components/MapView"), {
 
 
 export default function Home() {
-  const [location, setLocation] = useState<{
+  type LocationType = {
   lat: number;
   lng: number;
-} | null>(null);
-  const [cafes, setCafes] = useState([]);
+};
+const [location, setLocation] = useState<LocationType | null>(null);
+type Cafe = {
+  name: string;
+  lat: number;
+  lng: number;
+  rating: string;
+};
+  const [cafes, setCafes] = useState<Cafe[]>([]);
   const [maxDistance, setMaxDistance] = useState(6);
   const [loading, setLoading] = useState(true);
   
@@ -33,8 +40,8 @@ const cafeIconConfig = {
   iconUrl: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
   iconSize: [32, 32],
 };
-  const [error, setError] = useState(null);
-  const [selectedCafe, setSelectedCafe] = useState(null);
+ const [error, setError] = useState<string | null>(null);
+  const [selectedCafe, setSelectedCafe] = useState<Cafe | null>(null);
    const [L, setL] = useState<any>(null);
 
   useEffect(() => {
@@ -90,7 +97,7 @@ const cafeIconConfig = {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
 
-        setLocation({ lat, lng });
+        setLocation(() => ({ lat, lng }));
         fetchCafes(lat, lng);
       },
       (err) => {
