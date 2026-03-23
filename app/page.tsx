@@ -75,7 +75,9 @@ const cafeIconConfig = {
       }
     );
     if (!response.ok) {
-  throw new Error("API request failed");
+  setError("Failed to fetch cafes");
+  setLoading(false);
+  return;
 }
     const data = await response.json();
     const cafesWithRatings = data.elements
@@ -162,7 +164,7 @@ const filteredCafes = cafes.filter((cafe) => {
  return (
   <main
   style={{
-    minHeight: "100vh",
+    minHeight: "100dvh",
     background: "#0f172a",
     color: "white",
     padding: "20px",
@@ -203,7 +205,7 @@ const filteredCafes = cafes.filter((cafe) => {
 
     {location ? (
       <>
-        <p>
+        <p style={{ textAlign: "center" }}>
           Your Location: {location.lat}, {location.lng}
         </p>
         {/* ✅ ADD BUTTONS EXACTLY HERE */}
@@ -302,24 +304,31 @@ const filteredCafes = cafes.filter((cafe) => {
   <>
         <div
           style={{
-            position: "relative",
-            width: "90vw",
-            maxWidth: "400px",
-            height: "90vw",
-            maxHeight: "400px",
-            margin: "40px auto",
-            border: "1px solid #334155",
-            background: "#020617",
-            boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
-            borderRadius: "50%",
+           position: "relative",
+  width: "90vw",
+  height: "90vw",
+  maxWidth: "400px",
+  maxHeight: "400px",
+  aspectRatio: "1 / 1",
+  margin: "40px auto",
+  border: "1px solid #334155",
+  background: "#020617",
+  boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+  borderRadius: "50%",
+  overflow: "hidden",
           }}
         >
           {/* SVG LINES (spider web) */}
   <svg
-    width="400"
-    height="400"
-    style={{ position: "absolute", top: 0, left: 0 }}
-  >
+  viewBox="0 0 400 400"
+  style={{
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  }}
+>
     {/* ✅ ADD RINGS HERE */}
   {[50, 100, 150, 180].map((r, i) => (
     <circle
@@ -485,20 +494,7 @@ const filteredCafes = cafes.filter((cafe) => {
     </h3>
       <div style={{ marginTop: "10px", display: "flex", flexDirection: "column", gap: "8px" }}>
 
-  {/* 🗺️ View in App Map */}
-  <button
-    onClick={() => setView("map")}
-    style={{
-      padding: "8px",
-      borderRadius: "8px",
-      border: "none",
-      background: "#3b82f6",
-      color: "white",
-      cursor: "pointer",
-    }}
-  >
-    View on Map
-  </button>
+  
 
   {/* 📍 Open in Google Maps */}
   <a
