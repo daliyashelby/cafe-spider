@@ -32,11 +32,11 @@ const cafeIconConfig = {
 };
   const [error, setError] = useState(null);
   const [selectedCafe, setSelectedCafe] = useState(null);
-   const [L, setL] = useState(null);
+   const [L, setL] = useState<any>(null);
 
   useEffect(() => {
     import("leaflet").then((leaflet) => {
-      setL(leaflet);
+      setL(leaflet.default);
     });
   }, []);
 
@@ -71,19 +71,7 @@ const cafeIconConfig = {
     lng: place.lon,
     rating: (Math.random() * 2 + 3).toFixed(1),
   }));
-//     console.log("OSM DATA:", data);
-//     console.log("Total:", cafes.length);
-// console.log("Filtered:", filteredCafes.length);
 
-    // Convert to simple format
-  // const formatted = data.elements
-  
-  // .slice(0, 25) // limit to 20 cafes
-  // .map((place) => ({
-  //   name: place.tags?.name || "Unnamed Cafe",
-  //   lat: place.lat,
-  //   lng: place.lon,
-  // }));
 
 
     setCafes(cafesWithRatings);
